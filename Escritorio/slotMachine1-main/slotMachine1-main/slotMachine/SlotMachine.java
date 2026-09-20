@@ -32,6 +32,40 @@ public class SlotMachine
         rectangle.setPosition(20, 50);
     }
 
+    public SlotMachine(int n)
+    {
+        this();
+
+        if (n < 3 || n > MAX_WHEELS) {
+            ok = false;
+            return;
+        }
+    
+        // Crear las n ruedas
+        for (int i = 1; i <= n; i++) {
+            addWheel(i);
+        }
+    
+        // Crear los n símbolos, todos de diferente color
+        for (int i = 0; i < n; i++) {
+            addSymbol(colorFor(i));
+        }
+    
+        // Poner los mismos n símbolos, en el mismo orden,
+        // en todas las ruedas
+        for (int wheel = 1; wheel <= n; wheel++) {
+            for (int symbol = 0; symbol < n; symbol++) {
+                placeSymbol(wheel, symbolList.get(symbol));
+            }
+        }
+    
+        // Configuración inicial aleatoria
+        for (int wheel = 1; wheel <= n; wheel++) {
+            int steps = (int)(Math.random() * n);
+            spin(wheel, steps);
+        }
+    }
+    
     /**
      * Add a wheel position.
      * @param pos position of the wheel.
@@ -170,7 +204,15 @@ public class SlotMachine
      */
     public int distinctSymbols()
     {
-        return symbolList.size();
+        ArrayList<String> visibles = new ArrayList<String>();
+        for (Wheel wheel : wheels) {
+            String symbol = wheel.visibleSymbol();
+    
+            if (!symbol.equals("") && !visibles.contains(symbol)) {
+                visibles.add(symbol);
+            }
+        }
+        return visibles.size();
     }
     
     /**
@@ -375,5 +417,25 @@ public class SlotMachine
         if (visible) {
             JOptionPane.showMessageDialog(null, message);
         }
+    }
+    
+    private String colorFor(int position)
+    {
+        int red = 40 + ((position * 67) % 216);
+        int green = 40 + ((position * 113) % 216);
+        int blue = 40 + ((position * 157) % 216);
+    
+        return "#" + twoDigits(red) + twoDigits(green) + twoDigits(blue);
+    }
+
+    private String twoDigits(int value)
+    {
+        String result = Integer.toHexString(value);
+    
+        if (result.length() == 1) {
+            result = "0" + result;
+        }
+    
+        return result;
     }
 }

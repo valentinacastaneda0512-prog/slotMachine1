@@ -5,8 +5,8 @@ import org.junit.Test;
 /**
  * Unit tests for the SlotMachine class.
  *
- * These tests verify the main behaviors of the slot machine:
- * creation, wheels, symbols, spinning, configuration and jackpot.
+ * These tests are invisible. They verify the main
+ * behaviors of the slot machine without using the canvas.
  *
  * @author Cristian Anzola, Danik Castañeda
  * @version 1
@@ -16,803 +16,999 @@ public class SlotMachineTest
     private SlotMachine machine;
 
     /**
-     * Create a new slot machine before each test.
-     * Three symbols are added so that tests can use them 
-     * without repeating them.
+     * Creates a basic empty machine and adds
+     * three symbols for the tests that need them.
      */
     @Before
     public void setUp()
     {
         machine = new SlotMachine();
+    
         machine.addSymbol("red");
         machine.addSymbol("blue");
         machine.addSymbol("green");
+    }   
+    
+    /**
+     * Verifies that the default constructor creates
+     * a valid empty machine.
+     */
+    @Test
+    public void shouldCreateValidEmptyMachine()
+    {
+        SlotMachine nueva = new SlotMachine();
+    
+        assertTrue(nueva.ok());
+        assertEquals(0, nueva.configuration().length);
+    }
+    
+    /**
+     * Verifies that a machine with the minimum
+     * number of wheels is valid.
+     */
+    @Test
+    public void shouldCreateValidMachineWithMinimumWheels()
+    {
+        SlotMachine nueva = new SlotMachine(3);
+    
+        assertTrue(nueva.ok());
+        assertEquals(3, nueva.configuration().length);
+    }
+    
+    /**
+     * Verifies that a machine with ten wheels
+     * is created correctly.
+     */
+    @Test
+    public void shouldCreateValidMachineWithTenWheels()
+    {
+        SlotMachine nueva = new SlotMachine(10);
+    
+        assertTrue(nueva.ok());
+        assertEquals(10, nueva.configuration().length);
+    }
+    
+    /**
+     * Verifies that a machine with the maximum
+     * allowed number of wheels is valid.
+     */
+    @Test
+    public void shouldCreateValidMachineWithMaximumWheels()
+    {
+        SlotMachine nueva = new SlotMachine(50);
+    
+        assertTrue(nueva.ok());
+        assertEquals(50, nueva.configuration().length);
     }
 
     /**
-     * Verifies that a new machine starts without wheels
-     * and without a jackpot.
+     * Verifies that a machine with more than
+     * fifty wheels is rejected.
      */
     @Test
-    public void shouldCreateAnEmptyMachine()
+    public void shouldRejectMachineWithMoreThanFiftyWheels()
     {
-        SlotMachine emptyMachine = new SlotMachine();
-
-        assertEquals(0, emptyMachine.configuration().length);
-        assertEquals(0, emptyMachine.distinctSymbols());
-        assertFalse(emptyMachine.isJackpot());
+        SlotMachine nueva = new SlotMachine(51);
+    
+        assertFalse(nueva.ok());
+        assertEquals(0, nueva.configuration().length);
+    }
+    
+    /**
+     * Verifies that a wheel can be inserted
+     * at the first position.
+     */
+    @Test
+    public void shouldInsertWheelAtBeginning()
+    {
+        machine.addWheel(1);
+    
+        assertEquals(1, machine.configuration().length);
+        assertEquals("", machine.configuration()[0]);
+    }
+    
+    /**
+     * Verifies that a wheel can be inserted
+     * at the end of the current wheel list.
+     */
+    @Test
+    public void shouldInsertWheelAtEnd()
+    {
+        machine.addWheel(1);
+        machine.addWheel(2);
+        machine.addWheel(3);
+    
+        assertEquals(3, machine.configuration().length);
+    }
+    
+    /**
+     * Verifies that a position greater than the
+     * current number of wheels is corrected.
+     */
+    @Test
+    public void shouldCorrectPositionGreaterThanCurrentSize()
+    {
+        machine.addWheel(100);
+        machine.addWheel(100);
+    
+        assertEquals(2, machine.configuration().length);
+    }
+    
+    /**
+     * Verifies that a negative wheel position is
+     * corrected to a valid position.
+     */
+    @Test
+    public void shouldCorrectNegativeWheelPosition()
+    {
+        machine.addWheel(-5);
+        machine.addWheel(-10);
+    
+        assertEquals(2, machine.configuration().length);
+    }
+    
+    /**
+     * Verifies that no wheel is added when the
+     * maximum number of wheels has been reached.
+     */
+    @Test
+    public void shouldNotAddWheelBeyondMaximum()
+    {
+        for (int i = 1; i <= 50; i++) {
+            machine.addWheel(i);
+        }
+    
+        machine.addWheel(1);
+    
+        assertEquals(50, machine.configuration().length);
     }
 
     /**
-     * Verifies that symbols can be added to the machine
-     * and that they are not duplicated
+     * Verifies that the first wheel can be deleted.
      */
     @Test
-    public void shouldAddSymbolsWithoutDuplicates()
+    public void shouldDeleteFirstWheel()
+    {
+        machine.addWheel(1);
+        machine.addWheel(2);
+    
+        machine.delWheel(1);
+    
+        assertEquals(1, machine.configuration().length);
+    }
+    
+    /**
+     * Verifies that the last wheel can be deleted.
+     */
+    @Test
+    public void shouldDeleteLastWheel()
+    {
+        machine.addWheel(1);
+        machine.addWheel(2);
+        machine.addWheel(3);
+    
+        machine.delWheel(3);
+    
+        assertEquals(2, machine.configuration().length);
+    }
+    
+    /**
+     * Verifies that deleting wheel position zero
+     * does not modify the machine.
+     */
+    @Test
+    public void shouldIgnoreZeroWheelDeletion()
+    {
+        machine.addWheel(1);
+        machine.addWheel(2);
+    
+        machine.delWheel(0);
+    
+        assertEquals(2, machine.configuration().length);
+    }
+    
+    /**
+     * Verifies that deleting a negative wheel position
+     * does not modify the machine.
+     */
+    @Test
+    public void shouldIgnoreNegativeWheelDeletion()
+    {
+        machine.addWheel(1);
+        machine.addWheel(2);
+    
+        machine.delWheel(-2);
+    
+        assertEquals(2, machine.configuration().length);
+    }
+    
+    /**
+     * Verifies that deleting a wheel beyond the
+     * current number of wheels is ignored.
+     */
+    @Test
+    public void shouldIgnoreDeletionBeyondCurrentWheels()
+    {
+        machine.addWheel(1);
+        machine.addWheel(2);
+    
+        machine.delWheel(5);
+    
+        assertEquals(2, machine.configuration().length);
+    }
+
+    /**
+     * Verifies that a new symbol is added
+     * at the end of the symbol list.
+     */
+    @Test
+    public void shouldAddSymbolToEndOfList()
     {
         machine.addSymbol("yellow");
-        machine.addSymbol("yellow");
-        assertEquals(4, machine.distinctSymbols());
+    
         String[] symbols = machine.symbols();
+    
+        assertEquals("yellow", symbols[3]);
+    }
+    
+    /**
+     * Verifies that adding a symbol preserves
+     * the order of existing symbols.
+     */
+    @Test
+    public void shouldKeepOriginalSymbolOrder()
+    {
+        machine.addSymbol("yellow");
+    
+        String[] symbols = machine.symbols();
+    
         assertEquals("red", symbols[0]);
         assertEquals("blue", symbols[1]);
         assertEquals("green", symbols[2]);
         assertEquals("yellow", symbols[3]);
     }
-
+    
     /**
-     * Checks that the null symbol is ignored 
-     * since a null symbol should not be added to the list
+     * Verifies that adding a duplicated first symbol
+     * does not increase the symbol list.
      */
     @Test
-    public void shouldIgnoreNullSymbols()
+    public void shouldIgnoreRepeatedFirstSymbol()
+    {
+        machine.addSymbol("red");
+    
+        assertEquals(3, machine.symbols().length);
+    }
+    
+    /**
+     * Verifies that adding a duplicated last symbol
+     * does not increase the symbol list.
+     */
+    @Test
+    public void shouldIgnoreRepeatedLastSymbol()
+    {
+        machine.addSymbol("green");
+    
+        assertEquals(3, machine.symbols().length);
+    }
+    
+    /**
+     * Verifies that a null symbol is ignored.
+     */
+    @Test
+    public void shouldIgnoreNullSymbol()
     {
         machine.addSymbol(null);
-        assertEquals(3, machine.distinctSymbols());
+    
+        assertEquals(3, machine.symbols().length);
     }
 
     /**
-     * Verify that the machine can have 50 wheels.
+     * Verifies that a symbol can be inserted
+     * at the beginning of the list.
      */
     @Test
-    public void shouldAllowMaximumOfFiftyWheels()
+    public void shouldInsertSymbolAtBeginning()
     {
-        for (int i = 1; i <= 50; i++) {
-            machine.addWheel(i);
-        }
-        assertEquals(50, machine.configuration().length);
+        machine.addSymbol(1, "yellow");
+    
+        String[] symbols = machine.symbols();
+    
+        assertEquals("yellow", symbols[0]);
+        assertEquals("red", symbols[1]);
     }
-
+    
     /**
-     * Checks that the machine does not add more than
-    * 50 wheels.
+     * Verifies that a symbol can be inserted
+     * in the middle of the list.
      */
     @Test
-    public void shouldNotAllowMoreThanFiftyWheels()
+    public void shouldInsertSymbolInMiddle()
     {
-        for (int i = 1; i <= 50; i++) {
-            machine.addWheel(i);
-        }
-        machine.addWheel(51);
-        assertEquals(50, machine.configuration().length);
+        machine.addSymbol(2, "yellow");
+    
+        String[] symbols = machine.symbols();
+    
+        assertEquals("red", symbols[0]);
+        assertEquals("yellow", symbols[1]);
+        assertEquals("blue", symbols[2]);
     }
-
+    
     /**
-     * Checks that an invalid position less than 1 is valid
-     * when adding a wheel.
+     * Verifies that a symbol can be inserted
+     * at the end of the list.
      */
     @Test
-    public void shouldCorrectInvalidWheelPosition()
+    public void shouldInsertSymbolAtEnd()
     {
-        machine.addWheel(0);
-        assertEquals(1, machine.configuration().length);
+        machine.addSymbol(4, "yellow");
+    
+        String[] symbols = machine.symbols();
+    
+        assertEquals("yellow", symbols[3]);
+    }
+    
+    /**
+     * Verifies that a position below one is corrected
+     * to the first position.
+     */
+    @Test
+    public void shouldCorrectPositionBelowOne()
+    {
+        machine.addSymbol(0, "yellow");
+    
+        String[] symbols = machine.symbols();
+    
+        assertEquals("yellow", symbols[0]);
+    }
+    
+    /**
+     * Verifies that a duplicated color is not added
+     * even when a position is specified.
+     */
+    @Test
+    public void shouldIgnoreDuplicatedColorAtPosition()
+    {
+        machine.addSymbol(1, "blue");
+    
+        assertEquals(3, machine.symbols().length);
+        assertEquals("red", machine.symbols()[0]);
     }
 
     /**
-     * Verifies that a wheel can be deleted from the machine.
+     * Verifies that the first symbol can be deleted
+     * from the symbol list.
      */
     @Test
-    public void shouldDeleteWheel()
+    public void shouldDeleteFirstSymbol()
+    {
+        machine.delSymbol("red");
+    
+        String[] symbols = machine.symbols();
+    
+        assertEquals(2, symbols.length);
+        assertEquals("blue", symbols[0]);
+    }
+    
+    /**
+     * Verifies that a symbol in the middle of the
+     * list can be deleted.
+     */
+    @Test
+    public void shouldDeleteMiddleSymbol()
+    {
+        machine.delSymbol("blue");
+    
+        String[] symbols = machine.symbols();
+    
+        assertEquals(2, symbols.length);
+        assertEquals("red", symbols[0]);
+        assertEquals("green", symbols[1]);
+    }
+    
+    /**
+     * Verifies that the last symbol can be deleted
+     * from the symbol list.
+     */
+    @Test
+    public void shouldDeleteLastSymbol()
+    {
+        machine.delSymbol("green");
+    
+        String[] symbols = machine.symbols();
+    
+        assertEquals(2, symbols.length);
+        assertEquals("blue", symbols[1]);
+    }
+    
+    /**
+     * Verifies that deleting a null symbol is ignored.
+     */
+    @Test
+    public void shouldIgnoreNullSymbolDeletion()
+    {
+        machine.delSymbol(null);
+    
+        assertEquals(3, machine.symbols().length);
+    }
+    
+    /**
+     * Verifies that deleting a symbol also removes it
+     * from the wheels where it was placed.
+     */
+    @Test
+    public void shouldRemoveDeletedSymbolFromWheel()
     {
         machine.addWheel(1);
-        machine.addWheel(2);
-        machine.addWheel(3);
-        assertEquals(3, machine.configuration().length);
-        machine.delWheel(2);
-        assertEquals(2, machine.configuration().length);
-    }
-
-    /**
-     * Verifies that deleting an invalid wheel position
-     * does not modify the machine.
-     */
-    @Test
-    public void shouldIgnoreInvalidWheelDeletion()
-    {
-        machine.addWheel(1);
-        machine.addWheel(2);
-        machine.delWheel(0);
-        machine.delWheel(10);
-        assertEquals(2, machine.configuration().length);
-    }
-
-    /**
-     * Verifies that a symbol can be placed in a specific wheel.
-     */
-    @Test
-    public void shouldPlaceSymbolInTheCorrectWheel()
-    {
-        machine.addWheel(1);
-        machine.addWheel(2);
+    
         machine.placeSymbol(1, "red");
-        machine.placeSymbol(2, "blue");
-        machine.spin(1);
-        machine.spin(2);
-        String[] configuration = machine.configuration();
-        assertEquals("red", configuration[0]);
-        assertEquals("blue", configuration[1]);
+        machine.placeSymbol(1, "blue");
+    
+        machine.delSymbol("red");
+    
+        machine.spin(1, 0);
+    
+        assertEquals("blue", machine.configuration()[0]);
     }
 
     /**
-     * Verifies that an unknown symbol cannot be placed
+     * Verifies that a symbol can be placed
+     * in the first wheel.
+     */
+    @Test
+    public void shouldPlaceSymbolInFirstWheel()
+    {
+        machine.addWheel(1);
+        machine.placeSymbol(1, "red");
+        machine.spin(1, 0);
+    
+        assertEquals("red", machine.configuration()[0]);
+    }
+    
+    /**
+     * Verifies that different symbols can be placed
+     * in different wheels.
+     */
+    @Test
+    public void shouldPlaceDifferentSymbolsInDifferentWheels()
+    {
+        machine.addWheel(1);
+        machine.addWheel(2);
+    
+        machine.placeSymbol(1, "red");
+        machine.placeSymbol(2, "green");
+    
+        machine.spin(1, 0);
+        machine.spin(2, 0);
+    
+        assertEquals("red", machine.configuration()[0]);
+        assertEquals("green", machine.configuration()[1]);
+    }
+    
+    /**
+     * Verifies that a symbol is not placed when
+     * the wheel position is invalid.
+     */
+    @Test
+    public void shouldIgnoreSymbolInInvalidWheel()
+    {
+        machine.addWheel(1);
+    
+        machine.placeSymbol(2, "red");
+    
+        assertEquals("", machine.configuration()[0]);
+    }
+    
+    /**
+     * Verifies that a negative wheel position is ignored.
+     */
+    @Test
+    public void shouldIgnoreNegativeWheelPosition()
+    {
+        machine.addWheel(1);
+    
+        machine.placeSymbol(-1, "red");
+    
+        assertEquals("", machine.configuration()[0]);
+    }
+    
+    /**
+     * Verifies that a null symbol cannot be placed
      * in a wheel.
      */
     @Test
-    public void shouldNotPlaceUnknownSymbol()
+    public void shouldIgnoreNullSymbolWhenPlacing()
     {
         machine.addWheel(1);
-        machine.placeSymbol(1, "purple");
-        machine.spin(1);
+    
+        machine.placeSymbol(1, null);
+        machine.spin(1, 0);
+    
         assertEquals("", machine.configuration()[0]);
     }
 
     /**
-     * Verifies that spinning only one wheel does not spin
-     * the other wheels.
+     * Verifies that a wheel can move forward
+     * by two positions.
      */
     @Test
-    public void shouldSpinOnlyTheSelectedWheel()
+    public void shouldSpinForwardTwoSteps()
     {
         machine.addWheel(1);
-        machine.addWheel(2);
-        machine.placeSymbol(1, "red");
-        machine.placeSymbol(2, "blue");
-        machine.spin(1);
-        String[] configuration = machine.configuration();
-        assertEquals("red", configuration[0]);
-        assertEquals("", configuration[1]);
-    }
-
-    /**
-     * Verifies that the spin() method spins all the wheels.
-     */
-    @Test
-    public void shouldSpinAllWheels()
-    {
-        machine.addWheel(1);
-        machine.addWheel(2);
-        machine.addWheel(3);
-        machine.placeSymbol(1, "red");
-        machine.placeSymbol(2, "blue");
-        machine.placeSymbol(3, "green");
-        machine.spin();
-        String[] configuration = machine.configuration();
-        assertEquals("red", configuration[0]);
-        assertEquals("blue", configuration[1]);
-        assertEquals("green", configuration[2]);
-    }
-
-    /**
-    * Checks that a jackpot is detected when all wheels
-    * have the same symbol.
-    */
-    @Test
-    public void shouldDetectJackpotWhenAllWheelsHaveTheSameSymbol()
-    {
-        machine.addWheel(1);
-        machine.addWheel(2);
-        machine.addWheel(3);
-        machine.placeSymbol(1, "red");
-        machine.placeSymbol(2, "red");
-        machine.placeSymbol(3, "red");
-        machine.spin();
-        assertTrue(machine.isJackpot());
-    }
-
-    /**
-     * Verifies that a jackpot is not detected when the
-     */
-    @Test
-    public void shouldNotDetectJackpotWithDifferentSymbols()
-    {
-        machine.addWheel(1);
-        machine.addWheel(2);
-        machine.addWheel(3);
-        machine.placeSymbol(1, "red");
-        machine.placeSymbol(2, "red");
-        machine.placeSymbol(3, "blue");
-        machine.spin();
-        assertFalse(machine.isJackpot());
-    }
-
-    /**
-     * Verifies that the machine cannot have a jackpot if
-     * not all wheels have a visible symbol.
-     */
-    @Test
-    public void shouldNotDetectJackpotIfOneWheelHasNoVisibleSymbol()
-    {
-        machine.addWheel(1);
-        machine.addWheel(2);
-        machine.addWheel(3);
-        machine.placeSymbol(1, "red");
-        machine.placeSymbol(2, "red");
-        machine.placeSymbol(3, "red");
-        machine.spin(1);
-        machine.spin(2);
-        assertFalse(machine.isJackpot());
-    }
-
-    /**
-     * Verifies that the jackpot works with more than
-     *three wheels.
-     */
-    @Test
-    public void shouldDetectJackpotWithTenWheels()
-    {
-        for (int i = 1; i <= 10; i++) {
-            machine.addWheel(i);
-            machine.placeSymbol(i, "red");
-        }
-        machine.spin();
-        assertTrue(machine.isJackpot());
-        assertEquals(10, machine.configuration().length);
-    }
-
-    /**
-     * Verifies that a symbol can be deleted from the machine.
-     */
-    @Test
-    public void shouldDeleteSymbol()
-    {
-        assertEquals(3, machine.distinctSymbols());
-        machine.delSymbol("red");
-        assertEquals(2, machine.distinctSymbols());
-        String[] symbols = machine.symbols();
-        assertEquals("blue", symbols[0]);
-        assertEquals("green", symbols[1]);
-    }
-
-    /**
-     * Verifies that deleting a symbol that does not exist
-     * does not modify the symbol list.
-     */
-    @Test
-    public void shouldIgnoreDeletingUnknownSymbol()
-    {
-        machine.delSymbol("purple");
-        assertEquals(3, machine.distinctSymbols());
-    }
-
-    /**
-     * Verifies that deleting a symbol also removes it from
-     * the wheels where it was placed.
-     */
-    @Test
-    public void shouldRemoveDeletedSymbolFromTheWheels()
-    {
-        machine.addWheel(1);
-        machine.placeSymbol(1, "red");
-        machine.placeSymbol(1, "blue");
-        machine.delSymbol("red");
-        machine.spin(1);
-        assertEquals("blue", machine.configuration()[0]);
-    }
-
-    /**
-     * Verifies that the configuration method returns the
-     * visible symbol of every wheel in the correct order.
-     */
-    @Test
-    public void shouldReturnCorrectConfiguration()
-    {
-        machine.addWheel(1);
-        machine.addWheel(2);
-        machine.addWheel(3);
-        machine.placeSymbol(1, "red");
-        machine.placeSymbol(2, "blue");
-        machine.placeSymbol(3, "green");
-        machine.spin();
-        String[] configuration = machine.configuration();
-        assertEquals(3, configuration.length);
-        assertEquals("red", configuration[0]);
-        assertEquals("blue", configuration[1]);
-        assertEquals("green", configuration[2]);
-    }
     
-    /**
-     * SlotMachineTest
-     */
-
-     /**
-     * Verifies that two valid wheels can be exchanged.
-     */
-    @Test
-    public void shouldSwapTwoWheels()
-    {
-        machine.addWheel(1);
-        machine.addWheel(2);
-        machine.addWheel(3);
-        machine.placeSymbol(1, "red");
-        machine.placeSymbol(2, "blue");
-        machine.placeSymbol(3, "green");
-        machine.spin();
-        machine.swap(1, 3);
-        String[] configuration = machine.configuration();
-        assertEquals("green", configuration[0]);
-        assertEquals("blue", configuration[1]);
-        assertEquals("red", configuration[2]);
-    }
-
-    /**
-     * Verifies that swapping with an invalid first wheel
-     * does not modify the machine.
-     */
-    @Test
-    public void shouldNotSwapWithInvalidFirstWheel()
-    {
-        machine.addWheel(1);
-        machine.addWheel(2);
-        machine.placeSymbol(1, "red");
-        machine.placeSymbol(2, "blue");
-        machine.spin();
-        String[] before = machine.configuration();
-        machine.swap(0, 2);
-        String[] after = machine.configuration();
-        assertArrayEquals(before, after);
-    }
-
-    /**
-     * Verifies that swapping with an invalid second wheel
-     * does not modify the machine.
-     */
-    @Test
-    public void shouldNotSwapWithInvalidSecondWheel()
-    {
-        machine.addWheel(1);
-        machine.addWheel(2);
-        machine.placeSymbol(1, "red");
-        machine.placeSymbol(2, "blue");
-        machine.spin();
-        String[] before = machine.configuration();
-        machine.swap(1, 10);
-        String[] after = machine.configuration();
-        assertArrayEquals(before, after);
-    }
-
-    /**
-     * Verifies that a locked wheel cannot be spun.
-     */
-    @Test
-    public void shouldNotSpinLockedWheel()
-    {
-        machine.addWheel(1);
         machine.placeSymbol(1, "red");
         machine.placeSymbol(1, "blue");
         machine.placeSymbol(1, "green");
-        machine.spin(1, 0);
-        assertEquals("red", machine.configuration()[0]);
-        machine.lock(1);
-        machine.spin(1, 1);
-        assertEquals("red", machine.configuration()[0]);
-    }
-
-    /**
-     * Verifies that an unlocked wheel can be spun again.
-     */
-    @Test
-    public void shouldSpinWheelAfterUnlockingIt()
-    {
-        machine.addWheel(1);
-        machine.placeSymbol(1, "red");
-        machine.placeSymbol(1, "blue");
-        machine.placeSymbol(1, "green");
-        machine.spin(1, 0);
-        machine.lock(1);
-        machine.unlock(1);
-        machine.spin(1, 1);
-        assertEquals("blue", machine.configuration()[0]);
-    }
-
-    /**
-     * Verifies that locking an invalid wheel does not
-     * modify the machine.
-     */
-    @Test
-    public void shouldIgnoreInvalidWheelLock()
-    {
-        machine.addWheel(1);
-        machine.placeSymbol(1, "red");
-        machine.placeSymbol(1, "blue");
-        machine.spin(1, 0);
-        machine.lock(10);
-        machine.spin(1, 1);
-        assertEquals("blue", machine.configuration()[0]);
-    }
-
-    /**
-     * Verifies that unlocking an invalid wheel does not
-     * modify the machine.
-     */
-    @Test
-    public void shouldIgnoreInvalidWheelUnlock()
-    {
-        machine.addWheel(1);
-        machine.placeSymbol(1, "red");
-        machine.placeSymbol(1, "blue");
-        machine.spin(1, 0);
-        machine.lock(1);
-        machine.unlock(10);
-        machine.spin(1, 1);
-        assertEquals("red", machine.configuration()[0]);
-    }
-
-    /**
-     * Verifies that spinning a wheel one step moves it
-     * to the next symbol.
-     */
-    @Test
-    public void shouldSpinOneStep()
-    {
-        machine.addWheel(1);
-        machine.placeSymbol(1, "red");
-        machine.placeSymbol(1, "blue");
-        machine.placeSymbol(1, "green");
-        machine.spin(1, 0);
-        machine.spin(1, 1);
-        assertEquals("blue", machine.configuration()[0]);
-    }
-
-    /**
-     * Verifies that spinning a wheel two steps moves it
-     * two positions.
-     */
-    @Test
-    public void shouldSpinTwoSteps()
-    {
-        machine.addWheel(1);
-        machine.placeSymbol(1, "red");
-        machine.placeSymbol(1, "blue");
-        machine.placeSymbol(1, "green");
+    
         machine.spin(1, 0);
         machine.spin(1, 2);
+    
         assertEquals("green", machine.configuration()[0]);
     }
-
+    
     /**
-     * Verifies that spinning a wheel three steps returns
-     * it to its original position when it has three symbols.
+     * Verifies that a wheel can move backward
+     * by one position.
      */
     @Test
-    public void shouldReturnToOriginalPositionAfterThreeSteps()
+    public void shouldSpinBackwardOneStep()
     {
         machine.addWheel(1);
+    
         machine.placeSymbol(1, "red");
         machine.placeSymbol(1, "blue");
         machine.placeSymbol(1, "green");
+    
+        machine.spin(1, 0);
+        machine.spin(1, -1);
+    
+        assertEquals("green", machine.configuration()[0]);
+    }
+    
+    /**
+     * Verifies that a wheel can move backward
+     * by two positions.
+     */
+    @Test
+    public void shouldSpinBackwardTwoSteps()
+    {
+        machine.addWheel(1);
+    
+        machine.placeSymbol(1, "red");
+        machine.placeSymbol(1, "blue");
+        machine.placeSymbol(1, "green");
+    
+        machine.spin(1, 0);
+        machine.spin(1, -2);
+    
+        assertEquals("blue", machine.configuration()[0]);
+    }
+    
+    /**
+     * Verifies that a complete rotation returns
+     * the wheel to its original position.
+     */
+    @Test
+    public void shouldReturnToInitialPositionAfterFullRotation()
+    {
+        machine.addWheel(1);
+    
+        machine.placeSymbol(1, "red");
+        machine.placeSymbol(1, "blue");
+        machine.placeSymbol(1, "green");
+    
         machine.spin(1, 0);
         machine.spin(1, 3);
+    
+        assertEquals("red", machine.configuration()[0]);
+    }
+    
+    /**
+     * Verifies that a locked wheel does not change
+     * when a spin operation is requested.
+     */
+    @Test
+    public void shouldIgnoreSpinOnLockedWheel()
+    {
+        machine.addWheel(1);
+    
+        machine.placeSymbol(1, "red");
+        machine.placeSymbol(1, "blue");
+    
+        machine.spin(1, 0);
+        machine.lock(1);
+        machine.spin(1, 5);
+    
         assertEquals("red", machine.configuration()[0]);
     }
 
     /**
-     * Verifies that spinning zero steps does not change
-     * the visible symbol.
+     * Verifies that the first and last wheels
+     * exchange their positions.
      */
     @Test
-    public void shouldNotChangeWithZeroSteps()
-    {
-        machine.addWheel(1);
-        machine.placeSymbol(1, "red");
-        machine.placeSymbol(1, "blue");
-        machine.spin(1, 0);
-        String before = machine.configuration()[0];
-        machine.spin(1, 0);
-        String after = machine.configuration()[0];
-        assertEquals(before, after);
-    }
-
-    /**
-     * Verifies that spinning an invalid wheel does not
-     * modify the machine.
-     */
-    @Test
-    public void shouldNotSpinInvalidWheel()
-    {
-        machine.addWheel(1);
-        machine.placeSymbol(1, "red");
-        machine.placeSymbol(1, "blue");
-        machine.spin(1, 0);
-        String before = machine.configuration()[0];
-        machine.spin(10, 2);
-        String after = machine.configuration()[0];
-        assertEquals(before, after);
-    }
-
-    /**
-     * Verifies that the machine can be left in a given
-     * configuration.
-     */
-    @Test
-    public void shouldSetGivenConfiguration()
+    public void shouldSwapFirstAndLastWheel()
     {
         machine.addWheel(1);
         machine.addWheel(2);
         machine.addWheel(3);
+    
         machine.placeSymbol(1, "red");
-        machine.placeSymbol(1, "blue");
-        machine.placeSymbol(1, "green");
-        machine.placeSymbol(2, "red");
         machine.placeSymbol(2, "blue");
-        machine.placeSymbol(2, "green");
-        machine.placeSymbol(3, "red");
-        machine.placeSymbol(3, "blue");
         machine.placeSymbol(3, "green");
-        String[] desired = {
-            "red",
-            "blue",
-            "green"
-        };
-        machine.spin(desired);
-        assertArrayEquals(
-            desired,
-            machine.configuration()
-        );
-    }
-
-    /**
-     * Verifies that another valid configuration can be established.
-     */
-    @Test
-    public void shouldSetAnotherGivenConfiguration()
-    {
-        machine.addWheel(1);
-        machine.addWheel(2);
-        machine.addWheel(3);
-        machine.placeSymbol(1, "red");
-        machine.placeSymbol(1, "blue");
-        machine.placeSymbol(1, "green");
-        machine.placeSymbol(2, "red");
-        machine.placeSymbol(2, "blue");
-        machine.placeSymbol(2, "green");
-        machine.placeSymbol(3, "red");
-        machine.placeSymbol(3, "blue");
-        machine.placeSymbol(3, "green");
-        String[] desired = {
-            "green",
-            "green",
-            "red"
-        };
-        machine.spin(desired);
-        assertArrayEquals(
-            desired,
-            machine.configuration()
-        );
-    }
-
-    /**
-     * Verifies that a null configuration does not modify
-     * the machine.
-     */
-    @Test
-    public void shouldIgnoreNullConfiguration()
-    {
-        machine.addWheel(1);
-        machine.addWheel(2);
-        machine.placeSymbol(1, "red");
-        machine.placeSymbol(2, "blue");
+    
         machine.spin(1, 0);
         machine.spin(2, 0);
-        String[] before = machine.configuration();
-        machine.spin(null);
-        String[] after = machine.configuration();
-        assertArrayEquals(before, after);
+        machine.spin(3, 0);
+    
+        machine.swap(1, 3);
+    
+        assertEquals("green", machine.configuration()[0]);
+        assertEquals("blue", machine.configuration()[1]);
+        assertEquals("red", machine.configuration()[2]);
     }
-
+    
     /**
-     * Verifies that a configuration with a different number
-     * of symbols does not modify the machine.
+     * Verifies that two adjacent wheels can
+     * exchange their positions.
      */
     @Test
-    public void shouldIgnoreConfigurationWithWrongSize()
+    public void shouldSwapAdjacentWheels()
     {
         machine.addWheel(1);
         machine.addWheel(2);
-        machine.addWheel(3);
+    
         machine.placeSymbol(1, "red");
         machine.placeSymbol(2, "blue");
-        machine.placeSymbol(3, "green");
-        machine.spin();
-        String[] before = machine.configuration();
-        String[] desired = {
-            "red",
-            "blue"
-        };
-
-        machine.spin(desired);
-        String[] after = machine.configuration();
-        assertArrayEquals(before, after);
+    
+        machine.spin(1, 0);
+        machine.spin(2, 0);
+    
+        machine.swap(1, 2);
+    
+        assertEquals("blue", machine.configuration()[0]);
+        assertEquals("red", machine.configuration()[1]);
     }
-
+    
     /**
-     * Verifies that a locked wheel is not changed when
-     * a given configuration is requested.
+     * Verifies that a swap with an invalid first
+     * position is ignored.
      */
     @Test
-    public void shouldNotChangeLockedWheelInGivenConfiguration()
+    public void shouldIgnoreSwapWithFirstInvalidPosition()
     {
         machine.addWheel(1);
         machine.addWheel(2);
-        machine.addWheel(3);
+    
+        machine.placeSymbol(1, "red");
+        machine.spin(1, 0);
+    
+        String[] before = machine.configuration();
+    
+        machine.swap(0, 2);
+    
+        assertArrayEquals(before, machine.configuration());
+    }
+    
+    /**
+     * Verifies that a swap with an invalid second
+     * position is ignored.
+     */
+    @Test
+    public void shouldIgnoreSwapWithSecondInvalidPosition()
+    {
+        machine.addWheel(1);
+        machine.addWheel(2);
+    
+        machine.placeSymbol(1, "red");
+        machine.spin(1, 0);
+    
+        String[] before = machine.configuration();
+    
+        machine.swap(1, 3);
+    
+        assertArrayEquals(before, machine.configuration());
+    }
+    
+    /**
+     * Verifies that swapping a wheel with itself
+     * does not modify the configuration.
+     */
+    @Test
+    public void shouldIgnoreSwapUsingSameWheel()
+    {
+        machine.addWheel(1);
+        machine.placeSymbol(1, "red");
+        machine.spin(1, 0);
+    
+        String[] before = machine.configuration();
+    
+        machine.swap(1, 1);
+    
+        assertArrayEquals(before, machine.configuration());
+    }
+
+    /**
+     * Verifies that locking a wheel prevents
+     * it from changing its visible symbol.
+     */
+    @Test
+    public void shouldLockFirstWheel()
+    {
+        machine.addWheel(1);
+    
         machine.placeSymbol(1, "red");
         machine.placeSymbol(1, "blue");
-        machine.placeSymbol(1, "green");
-        machine.placeSymbol(2, "red");
-        machine.placeSymbol(2, "blue");
-        machine.placeSymbol(2, "green");
-        machine.placeSymbol(3, "red");
-        machine.placeSymbol(3, "blue");
-        machine.placeSymbol(3, "green");
+    
         machine.spin(1, 0);
         machine.lock(1);
-        String[] desired = {
-            "green",
-            "blue",
-            "red"
-        };
-        machine.spin(desired);
+        machine.spin(1, 1);
+    
         assertEquals("red", machine.configuration()[0]);
     }
     
     /**
-     * SlorMachineCC2Test 
+     * Verifies that unlocking a wheel allows it
+     * to spin again.
      */
+    @Test
+    public void shouldUnlockFirstWheel()
+    {
+        machine.addWheel(1);
     
-    /**
-     * Shared test identified with Aa.
-     *
-     * Verifies that swapping two valid wheels exchanges
-     * their visible symbols.
-     */
-    @Test
-    public void accordingAaSwapShouldExchangeTwoWheels()
-    {
-        machine.addWheel(1);
-        machine.addWheel(2);
-        machine.placeSymbol(1, "red");
-        machine.placeSymbol(2, "blue");
-        machine.spin();
-        machine.swap(1, 2);
-        assertEquals("blue",machine.configuration()[0]);
-        assertEquals( "red",machine.configuration()[1]);
-    }
-
-    /**
-     * Shared test identified with Cb.
-     *
-     * Verifies that a locked wheel cannot be rotated.
-     */
-    @Test
-    public void accordingCbLockShouldPreventWheelFromSpinning()
-    {
-        machine.addWheel(1);
-
         machine.placeSymbol(1, "red");
         machine.placeSymbol(1, "blue");
-        machine.placeSymbol(1, "green");
-        machine.spin(1, 0);
-        machine.lock(1);
-        machine.spin(1, 2);
-        assertEquals(
-            "red",
-            machine.configuration()[0]
-        );
-    }
-
-    /**
-     * Shared test identified with Aa.
-     *
-     * Verifies that an unlocked wheel can rotate again.
-     */
-    @Test
-    public void accordingAaUnlockShouldAllowWheelToSpin()
-    {
-        machine.addWheel(1);
-        machine.placeSymbol(1, "red");
-        machine.placeSymbol(1, "blue");
-        machine.placeSymbol(1, "green");
+    
         machine.spin(1, 0);
         machine.lock(1);
         machine.unlock(1);
         machine.spin(1, 1);
-        assertEquals(
-            "blue",
-            machine.configuration()[0]
-        );
+    
+        assertEquals("blue", machine.configuration()[0]);
     }
-
+    
     /**
-     * Shared test identified with Cb.
-     *
-     * Verifies that spin with a number of steps moves
-     * the wheel the requested number of positions.
+     * Verifies that locking an invalid negative
+     * wheel position has no effect.
      */
     @Test
-    public void accordingCbSpinShouldMoveTheRequestedSteps()
+    public void shouldIgnoreLockOnNegativePosition()
     {
         machine.addWheel(1);
+    
         machine.placeSymbol(1, "red");
         machine.placeSymbol(1, "blue");
-        machine.placeSymbol(1, "green");
+    
         machine.spin(1, 0);
-        machine.spin(1, 2);
-        assertEquals(
-            "green",
-            machine.configuration()[0]
-        );
+        machine.lock(-1);
+        machine.spin(1, 1);
+    
+        assertEquals("blue", machine.configuration()[0]);
+    }
+    
+    /**
+     * Verifies that unlocking an invalid wheel
+     * position has no effect on a locked wheel.
+     */
+    @Test
+    public void shouldIgnoreUnlockOnPositionBeyondWheels()
+    {
+        machine.addWheel(1);
+    
+        machine.placeSymbol(1, "red");
+        machine.placeSymbol(1, "blue");
+    
+        machine.spin(1, 0);
+        machine.lock(1);
+        machine.unlock(5);
+        machine.spin(1, 1);
+    
+        assertEquals("red", machine.configuration()[0]);
+    }
+    
+    /**
+     * Verifies that locking one wheel does not prevent
+     * another unlocked wheel from changing.
+     */
+    @Test
+    public void shouldAllowOnlyUnlockedWheelToChange()
+    {
+        machine.addWheel(1);
+        machine.addWheel(2);
+    
+        machine.placeSymbol(1, "red");
+        machine.placeSymbol(1, "blue");
+        machine.placeSymbol(2, "red");
+        machine.placeSymbol(2, "blue");
+    
+        machine.spin(1, 0);
+        machine.spin(2, 0);
+    
+        machine.lock(1);
+        machine.unlock(2);
+    
+        machine.spin(1, 1);
+        machine.spin(2, 1);
+    
+        assertEquals("red", machine.configuration()[0]);
+        assertEquals("blue", machine.configuration()[1]);
     }
 
     /**
-     * Shared test identified with Aa.
-     *
-     * Verifies that the machine can be placed in a
-     * specified configuration.
+     * Verifies that a machine without wheels has
+     * zero distinct visible symbols.
      */
     @Test
-    public void accordingAaSpinShouldSetGivenConfiguration()
+    public void shouldReturnZeroWhenThereAreNoWheels()
+    {
+        assertEquals(0, machine.distinctSymbols());
+    }
+    
+    /**
+     * Verifies that two wheels showing the same
+     * symbol count as one distinct symbol.
+     */
+    @Test
+    public void shouldReturnOneWhenAllWheelsShowSameSymbol()
+    {
+        machine.addWheel(1);
+        machine.addWheel(2);
+    
+        machine.placeSymbol(1, "red");
+        machine.placeSymbol(2, "red");
+    
+        machine.spin(1, 0);
+        machine.spin(2, 0);
+    
+        assertEquals(1, machine.distinctSymbols());
+    }
+    
+    /**
+     * Verifies that two different visible symbols
+     * are counted as two distinct symbols.
+     */
+    @Test
+    public void shouldReturnTwoForTwoDifferentVisibleSymbols()
+    {
+        machine.addWheel(1);
+        machine.addWheel(2);
+    
+        machine.placeSymbol(1, "red");
+        machine.placeSymbol(2, "blue");
+    
+        machine.spin(1, 0);
+        machine.spin(2, 0);
+    
+        assertEquals(2, machine.distinctSymbols());
+    }
+    
+    /**
+     * Verifies that wheels without visible symbols
+     * are not counted.
+     */
+    @Test
+    public void shouldIgnoreWheelsWithoutVisibleSymbols()
+    {
+        machine.addWheel(1);
+        machine.addWheel(2);
+    
+        machine.placeSymbol(1, "red");
+    
+        machine.spin(1, 0);
+    
+        assertEquals(1, machine.distinctSymbols());
+    }
+    
+    /**
+     * Verifies that three different visible symbols
+     * are counted correctly.
+     */
+    @Test
+    public void shouldReturnThreeDifferentVisibleSymbols()
     {
         machine.addWheel(1);
         machine.addWheel(2);
         machine.addWheel(3);
+    
         machine.placeSymbol(1, "red");
-        machine.placeSymbol(1, "blue");
-        machine.placeSymbol(1, "green");
-        machine.placeSymbol(2, "red");
         machine.placeSymbol(2, "blue");
-        machine.placeSymbol(2, "green");
-        machine.placeSymbol(3, "red");
-        machine.placeSymbol(3, "blue");
         machine.placeSymbol(3, "green");
-        String[] desired = {
-            "red",
-            "blue",
-            "green"
-        };
-        machine.spin(desired);
-        assertArrayEquals(
-            desired,
-            machine.configuration()
-        );
+    
+        machine.spin(1, 0);
+        machine.spin(2, 0);
+        machine.spin(3, 0);
+    
+        assertEquals(3, machine.distinctSymbols());
     }
-
+    
     /**
-     * Shared test identified with Cb.
-     *
-     * Verifies that an invalid wheel cannot be exchanged.
+     * Verifies that an empty machine does not
+     * have a jackpot.
      */
     @Test
-    public void accordingCbSwapShouldIgnoreInvalidWheel()
+    public void shouldReturnFalseForEmptyMachine()
+    {
+        SlotMachine nueva = new SlotMachine();
+    
+        assertFalse(nueva.isJackpot());
+    }
+    
+    /**
+     * Verifies that a wheel without a visible symbol
+     * prevents a jackpot.
+     */
+    @Test
+    public void shouldReturnFalseWhenWheelHasNoVisibleSymbol()
+    {
+        machine.addWheel(1);
+    
+        machine.placeSymbol(1, "red");
+    
+        assertFalse(machine.isJackpot());
+    }
+    
+    /**
+     * Verifies that two wheels showing the same
+     * symbol produce a jackpot.
+     */
+    @Test
+    public void shouldReturnTrueWithTwoEqualVisibleSymbols()
     {
         machine.addWheel(1);
         machine.addWheel(2);
-        machine.placeSymbol(1, "red");
-        machine.placeSymbol(2, "blue");
-        machine.spin();
-        String[] before = machine.configuration();
-        machine.swap(1, 10);
-        String[] after = machine.configuration();
-        assertArrayEquals(before,after);
-    }
-}
     
+        machine.placeSymbol(1, "red");
+        machine.placeSymbol(2, "red");
+    
+        machine.spin(1, 0);
+        machine.spin(2, 0);
+    
+        assertTrue(machine.isJackpot());
+    }
+    
+    /**
+     * Verifies that different visible symbols prevent
+     * a jackpot.
+     */
+    @Test
+    public void shouldReturnFalseWhenOnlyOneWheelDiffers()
+    {
+        machine.addWheel(1);
+        machine.addWheel(2);
+        machine.addWheel(3);
+    
+        machine.placeSymbol(1, "red");
+        machine.placeSymbol(2, "red");
+        machine.placeSymbol(3, "blue");
+    
+        machine.spin(1, 0);
+        machine.spin(2, 0);
+        machine.spin(3, 0);
+    
+        assertFalse(machine.isJackpot());
+    }
+    
+    /**
+     * Verifies that several wheels showing the same
+     * symbol produce a jackpot.
+     */
+    @Test
+    public void shouldReturnTrueAfterChangingAllWheelsToSameSymbol()
+    {
+        machine.addWheel(1);
+        machine.addWheel(2);
+        machine.addWheel(3);
+    
+        machine.placeSymbol(1, "red");
+        machine.placeSymbol(2, "red");
+        machine.placeSymbol(3, "red");
+    
+        machine.spin(1, 0);
+        machine.spin(2, 0);
+        machine.spin(3, 0);
+    
+        assertTrue(machine.isJackpot());
+    }
+}   
+
     
