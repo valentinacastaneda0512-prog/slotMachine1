@@ -1,0 +1,32 @@
+#BlueJ class context
+#Tue Sep 29 23:11:10 COT 2026
+comment0.target=SlotMachineContest
+comment0.text=\r\n Solves and simulates the Slot Machine contest problem.\r\n
+comment1.target=SlotMachineContest()
+comment1.text=\r\n Creates a contest object.\r\n
+comment10.target=boolean isSolved()
+comment10.text=\r\n Checks if the machine of the last solve is solved,\r\n that is, all the wheels show the same symbol.\r\n Only uses distinctSymbols, a method allowed for the testing tool.\r\n\r\n @return true if there is a machine and all its wheels show one symbol\r\n
+comment2.params=n
+comment2.target=int[][] solve(int)
+comment2.text=\r\n Solves the slot machine problem.\r\n\r\n If n is not a valid size for the machine, no machine is\r\n created and an empty sequence of actions is returned.\r\n\r\n @param n number of wheels and symbols\r\n @return sequence of actions {wheel, steps} necessary to win\r\n
+comment3.params=n
+comment3.target=void simulate(int)
+comment3.text=\r\n Simulates the solution.\r\n\r\n The machine returns (invisibly) to its initial configuration,\r\n becomes visible and then every action {wheel, steps}\r\n is applied so the user can watch how it is solved.\r\n\r\n @param n number of wheels and symbols\r\n
+comment4.params=milliseconds
+comment4.target=void pause(int)
+comment4.text=\r\n Waits a moment so each action can be seen.\r\n\r\n @param milliseconds waiting time\r\n
+comment5.target=int[][] solveMachine()
+comment5.text=\r\n Finds the actions necessary to win.\r\n\r\n @return sequence of actions {wheel, steps}\r\n
+comment6.params=wheel
+comment6.target=int[] scan(int)
+comment6.text=\r\n Scans all positions of a wheel.\r\n\r\n After the scan, the wheel returns to its original position.\r\n\r\n @param wheel wheel to scan\r\n @return distinct-symbol values for every position\r\n
+comment7.params=values
+comment7.target=int minimum(int[])
+comment7.text=\r\n Finds the minimum value in an array.\r\n\r\n @param values values to analyze\r\n @return minimum value\r\n
+comment8.params=targetScan commonScan
+comment8.target=int findTarget(int[], int[])
+comment8.text=\r\n Finds the target position by comparing two scans.\r\n\r\n @param targetScan scan with the target symbol in wheel 1\r\n @param commonScan scan with the common symbol in wheel 1\r\n @return position of the target symbol\r\n
+comment9.params=wheel current target
+comment9.target=void spinFromTo(int, int, int)
+comment9.text=\r\n Rotates a wheel from one relative position to another.\r\n\r\n @param wheel wheel to rotate\r\n @param current current position\r\n @param target target position\r\n
+numComments=11
