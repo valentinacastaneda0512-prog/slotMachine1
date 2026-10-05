@@ -1,0 +1,17 @@
+#BlueJ class context
+#Tue Sep 29 23:11:07 COT 2026
+comment0.target=Symbol
+comment0.text=\r\n Represents a symbol in the SlotMachine system.\r\n \r\n @author Cristian Anzola, Danik Casta\u00F1eda\r\n @version 1\r\n
+comment1.params=color
+comment1.target=Symbol(java.lang.String)
+comment1.text=\r\n Constructor for objects of class Symbol.\r\n @param color color of the symbol\r\n
+comment2.target=java.lang.String getColor()
+comment2.text=\r\n Returns the color of the symbol.\r\n @return color string\r\n
+comment3.target=void makeVisible()
+comment3.text=\r\n Makes the symbol visual representation visible.\r\n
+comment4.target=void makeInvisible()
+comment4.text=\r\n Makes the symbol visual representation invisible.\r\n
+comment5.params=x y
+comment5.target=void setPosition(int, int)
+comment5.text=\r\n Sets the position of the symbol's visual representation.\r\n @param x x-coordinate\r\n @param y y-coordinate\r\n
+numComments=6
