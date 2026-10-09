@@ -1,0 +1,28 @@
+#BlueJ class context
+#Thu Oct 08 14:25:13 COT 2026
+comment0.target=Symbol
+comment0.text=\r\n Represents a symbol in the SlotMachine system.\r\n\r\n @author Cristian Anzola, Danik Casta\u00F1eda\r\n @version 1\r\n
+comment1.params=color
+comment1.target=Symbol(java.lang.String)
+comment1.text=\r\n Constructor for objects of class Symbol.\r\n\r\n @param color color of the symbol\r\n
+comment10.target=void show()
+comment11.target=void hide()
+comment2.target=java.lang.String getColor()
+comment2.text=\r\n Returns the color of the symbol.\r\n\r\n @return color of the symbol\r\n
+comment3.target=void makeVisible()
+comment3.text=\r\n Makes the symbol visible.\r\n
+comment4.target=void makeInvisible()
+comment4.text=\r\n Makes the symbol invisible.\r\n
+comment5.target=boolean isVisible()
+comment5.text=\r\n Returns whether the symbol is visible.\r\n\r\n @return true if the symbol is visible\r\n
+comment6.params=x y
+comment6.target=void setPosition(int, int)
+comment6.text=\r\n Sets the position of the symbol.\r\n\r\n @param x x-coordinate\r\n @param y y-coordinate\r\n
+comment7.params=newSize
+comment7.target=void changeSize(int)
+comment7.text=\r\n Changes the size of the symbol.\r\n\r\n @param newSize new size of the symbol\r\n
+comment8.target=int getSize()
+comment8.text=\r\n Returns the current size of the symbol.\r\n\r\n @return size of the symbol\r\n
+comment9.target=void selected()
+comment9.text=\r\n Defines the behavior executed when the symbol\r\n is selected by a wheel.\r\n\r\n Normal symbols do not have special behavior.\r\n
+numComments=12

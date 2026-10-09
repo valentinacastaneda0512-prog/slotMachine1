@@ -1,0 +1,9 @@
+#BlueJ class context
+#Thu Oct 08 23:49:14 COT 2026
+comment0.target=SlotMachineContestCTest
+comment0.text=\r\n Shared unit test cases of the course.\r\n\r\n Each case keeps the intention and the name of the group that proposed\r\n it, and the comment says which group it belongs to. Cases that reached\r\n SlotMachine directly were rewritten to enter through SlotMachineContest,\r\n which is the class under test here, without changing what they verify.\r\n\r\n @author Cristian Anzola, Danik Castaneda\r\n @version 2\r\n
+comment1.target=void accordingCaPpshouldReturnValidMovesStructure()
+comment1.text=\r\n Verifies that every action has exactly the two values the problem\r\n asks for\: the wheel and the steps.\r\n\r\n Shared case of the group CanonA - PaezP, used as it was written.\r\n
+comment2.target=void accordingDrRmShouldNotCreateWheelAndSymbolWithNegativeNumber()
+comment2.text=\r\n Verifies that a negative size builds no wheels and no symbols, so\r\n there is nothing for the contest to do and nothing to win.\r\n\r\n Shared case of the group DiazR - RojasM. The original asked the\r\n machine for its wheels and symbols; here the same situation is\r\n checked through the contest, which answers with an empty sequence\r\n and reports that it did not win.\r\n
+numComments=3

@@ -1,0 +1,16 @@
+#BlueJ class context
+#Thu Oct 08 23:48:53 COT 2026
+comment0.target=SlotMachineAcceptanceTest
+comment0.text=\r\n Acceptance tests for SlotMachine.\r\n\r\n These tests are VISIBLE\: they are prepared to be\r\n shown in the presentation, so every action waits\r\n a moment to let the user see what happens.\r\n\r\n @author Cristian Anzola, Danik Casta\u00F1eda\r\n
+comment1.target=void setUp()
+comment1.text=\r\n Creates a preloaded slot machine and makes it visible.\r\n
+comment2.target=void tearDown()
+comment2.text=\r\n Closes the machine after each acceptance test.\r\n
+comment3.target=void shouldPlayCompleteSlotMachineSequence()
+comment3.text=\r\n Acceptance test that performs a complete sequence\:\r\n random spins, a given configuration, lock/unlock,\r\n swap and finally a jackpot.\r\n
+comment4.target=void shouldManageWheelsWhileVisible()
+comment4.text=\r\n Acceptance test that shows a step by step rotation\r\n and how wheels are added and deleted while visible.\r\n
+comment5.params=milliseconds
+comment5.target=void delay(int)
+comment5.text=\r\n Waits so the user can see the machine.\r\n @param milliseconds waiting time\r\n
+numComments=6

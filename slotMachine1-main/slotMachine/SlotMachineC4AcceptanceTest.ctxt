@@ -1,0 +1,12 @@
+#BlueJ class context
+#Thu Oct 08 23:57:17 COT 2026
+comment0.target=SlotMachineC4AcceptanceTest
+comment0.text=\r\n Acceptance tests for Cycle 4 of the Slot Machine.\r\n\r\n These tests verify the new wheel and symbol behaviors\r\n through the graphical interface.\r\n\r\n The tests include delays so the different behaviors\r\n can be observed visually.\r\n\r\n @author Cristian Anzola, Danik Castaneda\r\n @version 1\r\n
+comment1.target=void shouldShowTheThreeWheelTypes()
+comment1.text=\r\n First acceptance test\: verifies the three wheel types.\r\n\r\n A normal wheel behaves normally.\r\n A lefty wheel copies the state of the wheel immediately\r\n to its left.\r\n A rebel wheel cannot be locked, swapped or deleted.\r\n
+comment2.target=void shouldShowTheDifferentSymbolTypes()
+comment2.text=\r\n Second acceptance test\: verifies the different symbol types.\r\n\r\n The machine contains RainbowSymbol, EphemeralSymbol\r\n and ShySymbol objects.\r\n\r\n RainbowSymbol changes its size according to its color\:\r\n yellow increases, red decreases and blue remains normal.\r\n\r\n EphemeralSymbol decreases its size when selected.\r\n\r\n ShySymbol alternates its visibility when selected.\r\n\r\n The test also shows the jackpot behavior when all\r\n wheels display the same symbol.\r\n
+comment3.params=milliseconds
+comment3.target=void delay(int)
+comment3.text=\r\n Waits so the result can be seen.\r\n\r\n @param milliseconds waiting time\r\n
+numComments=4

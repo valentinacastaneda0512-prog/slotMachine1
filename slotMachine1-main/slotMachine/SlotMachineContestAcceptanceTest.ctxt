@@ -1,0 +1,12 @@
+#BlueJ class context
+#Thu Oct 08 23:49:03 COT 2026
+comment0.target=SlotMachineContestAcceptanceTest
+comment0.text=\r\n Acceptance tests for the Slot Machine contest.\r\n\r\n This is a simulation of how the algorithm solves the machine.\r\n It scans the wheels and identifies the most repeated symbol.\r\n From there, it moves the remaining wheels to match it and solve the problem.\r\n\r\n @author Cristian Anzola, Danik Castaneda\r\n @version 7\r\n
+comment1.target=void shouldSimulateTheSolutionOfFiveWheels()
+comment1.text=\r\n First simulation\: a machine of five wheels is created and solved.\r\n
+comment2.target=void shouldSimulateTheSolutionOfTenWheels()
+comment2.text=\r\n Second simulation\: a bigger machine, of ten wheels, is created and\r\n solved, to show that the contest works at a different scale.\r\n
+comment3.params=milliseconds
+comment3.target=void delay(int)
+comment3.text=\r\n Waits so the result can be seen.\r\n\r\n @param milliseconds waiting time\r\n
+numComments=4
