@@ -1,9 +1,0 @@
-#BlueJ class context
-#Thu Oct 08 14:25:13 COT 2026
-comment0.target=ShySymbol
-comment0.text=\r\n Represents a shy symbol.\r\n\r\n The symbol changes its visibility every time\r\n it is selected.\r\n\r\n @author Cristian Anzola, Danik Casta\u00F1eda\r\n @version 1\r\n
-comment1.params=color
-comment1.target=ShySymbol(java.lang.String)
-comment2.target=void selected()
-comment3.target=void show()
-numComments=4
