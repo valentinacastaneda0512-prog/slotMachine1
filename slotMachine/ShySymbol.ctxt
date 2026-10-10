@@ -1,0 +1,14 @@
+#BlueJ class context
+#Sat Oct 10 00:02:55 COT 2026
+comment0.target=ShySymbol
+comment0.text=\r\n Represents a shy symbol.\r\n\r\n The symbol changes its visibility every time\r\n it is selected.\r\n\r\n @author Cristian Anzola, Danik Casta\u00F1eda\r\n @version 2\r\n
+comment1.params=color
+comment1.target=ShySymbol(java.lang.String)
+comment1.text=\r\n Constructor for objects of class ShySymbol.\r\n\r\n @param color color of the symbol\r\n
+comment2.target=void selected()
+comment2.text=\r\n Alternates the visibility state of the symbol.\r\n\r\n The symbol is only drawn by show(), so a machine\r\n that is invisible never opens the canvas.\r\n
+comment3.target=boolean isVisible()
+comment3.text=\r\n Returns the visibility state of the shy symbol.\r\n\r\n @return true if the symbol must be shown\r\n
+comment4.target=void show()
+comment4.text=\r\n Shows the symbol only if its state is visible.\r\n
+numComments=5

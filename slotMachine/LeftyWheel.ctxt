@@ -1,0 +1,14 @@
+#BlueJ class context
+#Sat Oct 10 00:02:21 COT 2026
+comment0.target=LeftyWheel
+comment0.text=\r\n A wheel that copies the visible state of the wheel\r\n located immediately to its left when it is spun.\r\n\r\n It is light gray so it can be told apart from the other wheels.\r\n\r\n @author Cristian Anzola, Danik Casta\u00F1eda\r\n @version 2\r\n
+comment1.target=LeftyWheel()
+comment1.text=\r\n Creates a LeftyWheel.\r\n
+comment2.target=void spin()
+comment2.text=\r\n Spins the wheel.\r\n\r\n If there is a wheel to the left, this wheel copies\r\n its visible state. A locked wheel does not change.\r\n
+comment3.params=steps
+comment3.target=void spin(int)
+comment3.text=\r\n Spins the wheel a specific number of steps.\r\n\r\n If there is a wheel to the left, this wheel copies\r\n its visible state. A locked wheel does not change.\r\n\r\n @param steps number of positions to rotate\r\n
+comment4.target=void copyLeftWheel()
+comment4.text=\r\n Copies the state of the left wheel and shows the result.\r\n
+numComments=5

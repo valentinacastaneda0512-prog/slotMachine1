@@ -1,0 +1,11 @@
+#BlueJ class context
+#Sat Oct 10 00:04:44 COT 2026
+comment0.target=SlotMachineCC4Test
+comment0.text=\r\n Shared unit test cases of the course for Cycle 4 requirements.\r\n\r\n They cover the shared behaviors of the new wheel types\:\r\n a locked LeftyWheel and the restrictions of a RebelWheel.\r\n\r\n All the tests are invisible and do not use the graphical interface.\r\n\r\n @author Cristian Anzola, Danik Casta\u00F1eda\r\n @version 1\r\n
+comment1.target=void setUp()
+comment1.text=\r\n Creates a machine with three wheels.\r\n\r\n The first wheel is normal, the second is lefty and\r\n the third is rebel. Each wheel contains the symbols\r\n red, blue and yellow.\r\n
+comment2.target=void shouldNotMoveLockedLeftyWheelWhenTheMachineSpins()
+comment2.text=\r\n Tests that a locked LeftyWheel keeps its symbol when the\r\n whole machine spins, even if its left wheel changes.\r\n
+comment3.target=void shouldKeepRebelWheelUnaffectedByRestrictedOperations()
+comment3.text=\r\n Tests that a RebelWheel cannot be locked,\r\n swapped or deleted.\r\n\r\n The RebelWheel must remain in the machine after\r\n all the restricted operations are attempted.\r\n
+numComments=4
