@@ -1,5 +1,5 @@
 #BlueJ class context
-#Sat Oct 10 00:02:39 COT 2026
+#Sat Oct 24 15:10:22 COT 2026
 comment0.target=RebelWheel
 comment0.text=\r\n A wheel that cannot be locked, swapped or deleted.\r\n\r\n It is dark gray so it can be told apart from the other wheels.\r\n\r\n @author Cristian Anzola, Danik Casta\u00F1eda\r\n @version 2\r\n
 comment1.target=RebelWheel()

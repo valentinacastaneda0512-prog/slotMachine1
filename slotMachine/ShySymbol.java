@@ -19,6 +19,10 @@ public class ShySymbol extends Symbol
     public ShySymbol(String color)
     {
         super(color);
+
+        mark = new Circle();
+        mark.changeColor("magenta");
+        mark.changeSize(8);
         shyVisible = false;
     }
 

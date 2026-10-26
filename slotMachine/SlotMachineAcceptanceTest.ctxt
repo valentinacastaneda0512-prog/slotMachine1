@@ -1,5 +1,5 @@
 #BlueJ class context
-#Sat Oct 10 00:04:33 COT 2026
+#Sat Oct 24 15:10:22 COT 2026
 comment0.target=SlotMachineAcceptanceTest
 comment0.text=\r\n Acceptance tests for SlotMachine.\r\n\r\n These tests are VISIBLE\: they are prepared to be\r\n shown in the presentation, so every action waits\r\n a moment to let the user see what happens.\r\n\r\n @author Cristian Anzola, Danik Casta\u00F1eda\r\n
 comment1.target=void setUp()

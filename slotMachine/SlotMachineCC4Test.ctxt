@@ -1,5 +1,5 @@
 #BlueJ class context
-#Sat Oct 10 00:04:44 COT 2026
+#Sat Oct 24 15:23:15 COT 2026
 comment0.target=SlotMachineCC4Test
 comment0.text=\r\n Shared unit test cases of the course for Cycle 4 requirements.\r\n\r\n They cover the shared behaviors of the new wheel types\:\r\n a locked LeftyWheel and the restrictions of a RebelWheel.\r\n\r\n All the tests are invisible and do not use the graphical interface.\r\n\r\n @author Cristian Anzola, Danik Casta\u00F1eda\r\n @version 1\r\n
 comment1.target=void setUp()
@@ -8,4 +8,10 @@ comment2.target=void shouldNotMoveLockedLeftyWheelWhenTheMachineSpins()
 comment2.text=\r\n Tests that a locked LeftyWheel keeps its symbol when the\r\n whole machine spins, even if its left wheel changes.\r\n
 comment3.target=void shouldKeepRebelWheelUnaffectedByRestrictedOperations()
 comment3.text=\r\n Tests that a RebelWheel cannot be locked,\r\n swapped or deleted.\r\n\r\n The RebelWheel must remain in the machine after\r\n all the restricted operations are attempted.\r\n
-numComments=4
+comment4.target=void acordingCaPpShouldNotDeleteRebelWheelbutShouldDeleteNormalWheel()
+comment4.text=\r\n Verifies that a RebelWheel cannot be deleted, but a normal\r\n wheel of the same machine can.\r\n\r\n Shared case of the group Ca\u00F1onA - PaezP, used as it was written.\r\n
+comment5.target=void accordingCgCpShouldHandleEphemeralAndShySymbolsByTheirColor()
+comment5.text=\r\n Verifies that ephemeral and shy symbols are still symbols of\r\n their color\: they are listed by their color and can be removed\r\n by their color.\r\n\r\n Shared case of the group of Juan Carre\u00F1o - Juan Casta\u00F1o, used as it was written.\r\n
+comment6.target=void accordingGbShouldNotAllowDuplicateColorAcrossSymbolTypes()
+comment6.text=\r\n Verifies that a symbol of another type cannot introduce a color\r\n that already exists in the machine.\r\n\r\n Shared case of the group of Gomez Boada Julian. The original called\r\n addSymbol(type, color, pos); here the parameters follow the order\r\n of the class diagram, addSymbol(type, pos, color), without\r\n changing what the case verifies.\r\n
+numComments=7

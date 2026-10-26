@@ -1,5 +1,5 @@
 #BlueJ class context
-#Sat Oct 10 00:04:33 COT 2026
+#Sat Oct 24 15:10:22 COT 2026
 comment0.target=SlotMachineTest
 comment0.text=\r\n Unit tests for the SlotMachine class (cycle 1 and SlotMachine(n) of cycle 3).\r\n\r\n All the tests are invisible. Each group answers two questions\:\r\n what should the method do? and what should it NOT do?\r\n\r\n @author Cristian Anzola, Danik Casta\u00F1eda\r\n @version 2\r\n
 comment1.target=void setUp()

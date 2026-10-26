@@ -1,5 +1,5 @@
 #BlueJ class context
-#Sat Oct 10 00:03:12 COT 2026
+#Sat Oct 24 15:09:58 COT 2026
 comment0.target=RainbowSymbol
 comment0.text=\r\n Represents a symbol whose size changes according to its color.\r\n\r\n A yellow symbol increases its size when it is selected.\r\n A red symbol decreases its size when it is selected.\r\n A blue symbol keeps its normal size.\r\n Any other color also keeps its normal size.\r\n\r\n The size of the symbol is limited to avoid values that are\r\n too large or too small.\r\n\r\n @author Cristian Anzola\r\n @author Danik Casta\u00F1eda\r\n @version 2\r\n
 comment1.params=color

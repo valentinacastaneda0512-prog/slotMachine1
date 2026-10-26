@@ -10,6 +10,13 @@ public class Symbol
     private Circle circle;
     private boolean visible;
     private int size;
+    private int displayLimit;
+
+    /**
+     * Small dot drawn in the corner of the symbol so each special type
+     * can be recognized at a glance. Normal symbols do not have one.
+     */
+    protected Circle mark;
 
     /**
      * Constructor for objects of class Symbol.
@@ -21,6 +28,7 @@ public class Symbol
         this.color = color;
         this.visible = false;
         this.size = 30;
+        this.displayLimit = Integer.MAX_VALUE;
 
         circle = new Circle();
         circle.changeColor(color);
@@ -45,6 +53,10 @@ public class Symbol
     {
         visible = true;
         circle.makeVisible();
+
+        if (mark != null) {
+            mark.makeVisible();
+        }
     }
 
     /**
@@ -54,6 +66,10 @@ public class Symbol
     {
         visible = false;
         circle.makeInvisible();
+
+        if (mark != null) {
+            mark.makeInvisible();
+        }
     }
 
     /**
@@ -75,6 +91,10 @@ public class Symbol
     public void setPosition(int x, int y)
     {
         circle.setPosition(x, y);
+
+        if (mark != null) {
+            mark.setPosition(x, y);
+        }
     }
 
     /**
@@ -85,7 +105,19 @@ public class Symbol
     protected void changeSize(int newSize)
     {
         size = newSize;
-        circle.changeSize(size);
+        circle.changeSize(Math.min(size, displayLimit));
+    }
+
+    /**
+     * Limits the drawn diameter so the symbol fits inside its wheel.
+     * The logical size (getSize) does not change.
+     *
+     * @param limit maximum diameter to draw, in pixels
+     */
+    public void fitInto(int limit)
+    {
+        displayLimit = limit;
+        circle.changeSize(Math.min(size, displayLimit));
     }
 
     /**

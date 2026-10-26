@@ -19,6 +19,12 @@ public class SlotMachine
     private Rectangle rectangle;
 
     private static final int MAX_WHEELS = 50;
+    private static final int MACHINE_X = 20;
+    private static final int MACHINE_Y = 50;
+    private static final int MACHINE_WIDTH = 260;
+    private static final int MACHINE_HEIGHT = 70;
+    private static final int MACHINE_PADDING = 10;
+    private static final String MACHINE_COLOR = "#5E6B78";
 
     /**
      * Constructor for objects of class SlotMachine.
@@ -34,9 +40,9 @@ public class SlotMachine
         ok = true;
 
         rectangle = new Rectangle();
-        rectangle.changeColor("magenta");
-        rectangle.changeSize(70, 260);
-        rectangle.setPosition(20, 50);
+        rectangle.changeColor(MACHINE_COLOR);
+        rectangle.changeSize(MACHINE_HEIGHT, MACHINE_WIDTH);
+        rectangle.setPosition(MACHINE_X, MACHINE_Y);
     }
 
     /**
@@ -742,6 +748,24 @@ public class SlotMachine
                 );
             }
         }
+
+        resizeMachine();
+    }
+
+    /**
+     * Grows or shrinks the machine frame so it contains
+     * every row of wheels.
+     */
+    private void resizeMachine()
+    {
+        int height = MACHINE_HEIGHT;
+
+        if (wheels.size() > 0) {
+            int lastBottom = wheels.get(wheels.size() - 1).bottom();
+            height = Math.max(MACHINE_HEIGHT, lastBottom + MACHINE_PADDING - MACHINE_Y);
+        }
+
+        rectangle.changeSize(height, MACHINE_WIDTH);
     }
 
     /**
@@ -754,7 +778,7 @@ public class SlotMachine
             rectangle.changeColor("yellow");
         }
         else {
-            rectangle.changeColor("magenta");
+            rectangle.changeColor(MACHINE_COLOR);
         }
     }
 

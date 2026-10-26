@@ -125,4 +125,86 @@ public class SlotMachineCC4Test
             after
         );
     }
+
+    // ------------------------------------------------------------
+    // Grupo 6: CañonA - PaezP
+    // ------------------------------------------------------------
+
+    /**
+     * Verifies that a RebelWheel cannot be deleted, but a normal
+     * wheel of the same machine can.
+     *
+     * Shared case of the group CañonA - PaezP, used as it was written.
+     */
+    @Test
+    public void acordingCaPpShouldNotDeleteRebelWheelbutShouldDeleteNormalWheel() {
+        SlotMachine machine = new SlotMachine();
+
+        machine.addWheel("normal", 1);
+        machine.addWheel("rebel", 2);
+
+        machine.delWheel(2);
+
+        assertFalse(machine.ok());
+        assertEquals(2, machine.configuration().length);
+
+        machine.delWheel(1);
+        assertTrue(machine.ok());
+        assertEquals(1, machine.configuration().length);
+    }
+
+    // ------------------------------------------------------------
+    // Grupo 03: Juan Carreño - Juan Castaño
+    // ------------------------------------------------------------
+
+    /**
+     * Verifies that ephemeral and shy symbols are still symbols of
+     * their color: they are listed by their color and can be removed
+     * by their color.
+     *
+     * Shared case of the group of Juan Carreño - Juan Castaño, used as it was written.
+     */
+    @Test
+    public void accordingCgCpShouldHandleEphemeralAndShySymbolsByTheirColor()
+    {
+        SlotMachine slotMachine = new SlotMachine();
+        slotMachine.makeInvisible();
+        slotMachine.addSymbol(1, "red");
+        slotMachine.addSymbol("ephemeral", 2, "yellow");
+        assertTrue(slotMachine.ok());
+        slotMachine.addSymbol("shy", 3, "purple");
+        assertTrue(slotMachine.ok());
+        assertArrayEquals(new String[]{"red", "yellow", "purple"},
+                          slotMachine.symbols());
+        slotMachine.delSymbol("yellow");
+        assertTrue(slotMachine.ok());
+        assertArrayEquals(new String[]{"red", "purple"},
+                          slotMachine.symbols());
+    }
+
+    // ------------------------------------------------------------
+    // Grupo 04: Gomez Boada Julian
+    // ------------------------------------------------------------
+
+    /**
+     * Verifies that a symbol of another type cannot introduce a color
+     * that already exists in the machine.
+     *
+     * Shared case of the group of Gomez Boada Julian. The original called
+     * addSymbol(type, color, pos); here the parameters follow the order
+     * of the class diagram, addSymbol(type, pos, color), without
+     * changing what the case verifies.
+     */
+    @Test
+    public void accordingGbShouldNotAllowDuplicateColorAcrossSymbolTypes() {
+        SlotMachine machine = new SlotMachine();
+        machine.addWheel("normal", 1);
+        machine.addSymbol("normal", 1, "red");
+        assertTrue(machine.ok());
+
+        machine.addSymbol("pulsing", 1, "red");
+        assertFalse(machine.ok());
+
+        assertArrayEquals(new String[]{"red"}, machine.symbols());
+    }
 }

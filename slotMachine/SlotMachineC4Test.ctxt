@@ -1,5 +1,5 @@
 #BlueJ class context
-#Sat Oct 10 00:03:48 COT 2026
+#Sat Oct 24 15:10:22 COT 2026
 comment0.target=SlotMachineC4Test
 comment0.text=\r\n Unit tests for the fourth cycle of SlotMachine.\r\n\r\n These tests verify the behavior of the different\r\n wheel and symbol types introduced in Cycle 4.\r\n\r\n The tests do not use the graphical interface.\r\n The graphical interface will be tested through\r\n acceptance tests.\r\n\r\n @author Cristian Anzola, Danik Casta\u00F1eda\r\n @version 1\r\n
 comment1.target=void shouldCopyTheStateOfTheImmediateLeftWheel()

@@ -24,9 +24,16 @@ public class Wheel
     private static final int AVAILABLE_WIDTH = 250;
     private static final int WHEEL_HEIGHT = 50;
     private static final int STEP_DELAY = 60;
+    private static final int WHEELS_PER_ROW = 10;
+    private static final int AVAILABLE_HEIGHT = 180;
+    private static final int SYMBOL_SIZE = 30;
+    private static final int GAP = 2;
+    private static final int MARGIN = 4;
 
     private int circleX;
     private int circleY;
+    private int symbolLimit;
+    private int bottom;
 
     /**
      * Constructor for objects of class Wheel.
@@ -36,7 +43,7 @@ public class Wheel
         symbols = new ArrayList<Symbol>();
 
         rectangle = new Rectangle();
-        rectangle.changeColor("green");
+        rectangle.changeColor("white");
 
         visibleSymbol = -1;
         visible = false;
@@ -51,6 +58,9 @@ public class Wheel
 
         circleX = START_X + (wheelWidth - circleSize) / 2;
         circleY = START_Y + (WHEEL_HEIGHT - circleSize) / 2;
+
+        symbolLimit = WHEEL_HEIGHT - MARGIN;
+        bottom = START_Y + WHEEL_HEIGHT;
     }
 
     /**
@@ -63,7 +73,7 @@ public class Wheel
         if (symbol != null) {
             symbols.add(symbol);
 
-            symbol.setPosition(circleX, circleY);
+            placeSymbol(symbol);
 
             if (visible) {
                 symbol.makeInvisible();
@@ -247,7 +257,7 @@ public class Wheel
         if (visibleSymbol != -1 &&
             visibleSymbol < symbols.size()) {
 
-            symbols.get(visibleSymbol).makeVisible();
+            symbols.get(visibleSymbol).show();
         }
     }
 
@@ -273,26 +283,50 @@ public class Wheel
      */
     public void setPosition(int position, int totalWheels)
     {
-        int wheelWidth = AVAILABLE_WIDTH / totalWheels;
+        int columns = Math.min(totalWheels, WHEELS_PER_ROW);
+        int rows = (totalWheels + WHEELS_PER_ROW - 1) / WHEELS_PER_ROW;
 
-        int x = START_X + (position - 1) * wheelWidth;
-        int y = START_Y;
+        int wheelWidth = AVAILABLE_WIDTH / columns;
+        int wheelHeight = Math.min(WHEEL_HEIGHT, AVAILABLE_HEIGHT / rows);
 
-        rectangle.changeSize(WHEEL_HEIGHT, wheelWidth);
+        int x = START_X + ((position - 1) % WHEELS_PER_ROW) * wheelWidth;
+        int y = START_Y + ((position - 1) / WHEELS_PER_ROW) * wheelHeight;
+
+        rectangle.changeSize(wheelHeight - GAP, wheelWidth - GAP);
         rectangle.setPosition(x, y);
 
-        int circleSize = 30;
+        symbolLimit = Math.min(wheelWidth, wheelHeight) - MARGIN;
+        int circleSize = Math.min(SYMBOL_SIZE, symbolLimit);
 
-        if (wheelWidth < circleSize) {
-            circleSize = wheelWidth;
-        }
-
-        circleX = x + (wheelWidth - circleSize) / 2;
-        circleY = y + (WHEEL_HEIGHT - circleSize) / 2;
+        circleX = x + (wheelWidth - GAP - circleSize) / 2;
+        circleY = y + (wheelHeight - GAP - circleSize) / 2;
+        bottom = y + wheelHeight;
 
         for (Symbol symbol : symbols) {
-            symbol.setPosition(circleX, circleY);
+            placeSymbol(symbol);
         }
+    }
+
+    /**
+     * Returns the lowest pixel the wheel occupies, so the machine
+     * can grow to contain every row of wheels.
+     *
+     * @return y-coordinate of the bottom of the wheel
+     */
+    public int bottom()
+    {
+        return bottom;
+    }
+
+    /**
+     * Places a symbol in the center of the wheel, sized to fit it.
+     *
+     * @param symbol symbol to place
+     */
+    private void placeSymbol(Symbol symbol)
+    {
+        symbol.fitInto(symbolLimit);
+        symbol.setPosition(circleX, circleY);
     }
 
     /**

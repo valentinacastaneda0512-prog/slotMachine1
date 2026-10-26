@@ -1,5 +1,5 @@
 #BlueJ class context
-#Sat Oct 10 00:04:24 COT 2026
+#Sat Oct 24 15:10:22 COT 2026
 comment0.target=SlotMachineC4AcceptanceTest
 comment0.text=\r\n Acceptance tests for Cycle 4 of the Slot Machine.\r\n\r\n These tests verify the new wheel and symbol behaviors\r\n through the graphical interface.\r\n\r\n The tests include delays so the different behaviors\r\n can be observed visually.\r\n\r\n @author Cristian Anzola, Danik Castaneda\r\n @version 1\r\n
 comment1.target=void shouldShowTheThreeWheelTypes()

@@ -1,12 +1,14 @@
 #BlueJ class context
-#Fri Oct 09 20:44:22 COT 2026
+#Sat Oct 24 15:07:36 COT 2026
 comment0.target=Symbol
 comment0.text=\r\n Represents a symbol in the SlotMachine system.\r\n\r\n @author Cristian Anzola, Danik Casta\u00F1eda\r\n @version 1\r\n
 comment1.params=color
 comment1.target=Symbol(java.lang.String)
 comment1.text=\r\n Constructor for objects of class Symbol.\r\n\r\n @param color color of the symbol\r\n
-comment10.target=void show()
-comment11.target=void hide()
+comment10.target=void selected()
+comment10.text=\r\n Defines the behavior executed when the symbol\r\n is selected by a wheel.\r\n\r\n Normal symbols do not have special behavior.\r\n
+comment11.target=void show()
+comment12.target=void hide()
 comment2.target=java.lang.String getColor()
 comment2.text=\r\n Returns the color of the symbol.\r\n\r\n @return color of the symbol\r\n
 comment3.target=void makeVisible()
@@ -21,8 +23,9 @@ comment6.text=\r\n Sets the position of the symbol.\r\n\r\n @param x x-coordinat
 comment7.params=newSize
 comment7.target=void changeSize(int)
 comment7.text=\r\n Changes the size of the symbol.\r\n\r\n @param newSize new size of the symbol\r\n
-comment8.target=int getSize()
-comment8.text=\r\n Returns the current size of the symbol.\r\n\r\n @return size of the symbol\r\n
-comment9.target=void selected()
-comment9.text=\r\n Defines the behavior executed when the symbol\r\n is selected by a wheel.\r\n\r\n Normal symbols do not have special behavior.\r\n
-numComments=12
+comment8.params=limit
+comment8.target=void fitInto(int)
+comment8.text=\r\n Limits the drawn diameter so the symbol fits inside its wheel.\r\n The logical size (getSize) does not change.\r\n\r\n @param limit maximum diameter to draw, in pixels\r\n
+comment9.target=int getSize()
+comment9.text=\r\n Returns the current size of the symbol.\r\n\r\n @return size of the symbol\r\n
+numComments=13

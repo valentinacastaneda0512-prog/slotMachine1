@@ -19,6 +19,10 @@ public class EphemeralSymbol extends Symbol
     public EphemeralSymbol(String color)
     {
         super(color);
+
+        mark = new Circle();
+        mark.changeColor("black");
+        mark.changeSize(8);
     }
 
     /**

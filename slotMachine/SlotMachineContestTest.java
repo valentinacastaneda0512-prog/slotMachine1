@@ -21,6 +21,7 @@ public class SlotMachineContestTest
 {
     private static final int MINIMUM_SIZE = 3;
     private static final int MAXIMUM_SIZE = 50;
+    private static final int MAXIMUM_ROUNDS = 10000;
 
     private SlotMachineContest contest;
 
@@ -174,5 +175,71 @@ public class SlotMachineContestTest
         }
         assertTrue(another.solves(MAXIMUM_SIZE));
         assertFalse(another.solves(MAXIMUM_SIZE + 1));
+    }
+
+    /**
+     * Verifies that the contest should win using fewer than 10 000
+     * rounds in total, counting every spin it makes to explore the
+     * machine and not only the actions it returns.
+     *
+     * The machine used here counts each call to spin(wheel, steps),
+     * which is the only way the strategy can move a wheel.
+     */
+    @Test
+    public void shouldWinWithinTheRoundLimitOfTheProblem()
+    {
+        for (int n = MINIMUM_SIZE; n <= MAXIMUM_SIZE; n++) {
+            CountingSlotMachine machine = new CountingSlotMachine(n);
+
+            int[][] actions = contest.actionsToWin(machine, n);
+            int rounds = machine.rounds() + actions.length;
+
+            assertTrue("size " + n + " used " + rounds, rounds < MAXIMUM_ROUNDS);
+        }
+    }
+
+    /**
+     * Slot machine that counts how many times a wheel is spun.
+     * It only exists to measure the strategy; it does not change
+     * how the machine behaves.
+     */
+    private static class CountingSlotMachine extends SlotMachine
+    {
+        private int rounds;
+
+        /**
+         * Creates a random machine and starts counting from zero,
+         * so the spins of the random start are not counted.
+         *
+         * @param n number of wheels and symbols
+         */
+        public CountingSlotMachine(int n)
+        {
+            super(n);
+            rounds = 0;
+        }
+
+        /**
+         * Counts the round and spins the wheel as usual.
+         *
+         * @param wheel position of the wheel
+         * @param steps number of steps
+         */
+        @Override
+        public void spin(int wheel, int steps)
+        {
+            rounds++;
+            super.spin(wheel, steps);
+        }
+
+        /**
+         * Returns the rounds counted so far.
+         *
+         * @return number of spins made
+         */
+        public int rounds()
+        {
+            return rounds;
+        }
     }
 }

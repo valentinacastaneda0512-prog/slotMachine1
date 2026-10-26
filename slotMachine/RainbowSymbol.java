@@ -28,6 +28,10 @@ public class RainbowSymbol extends Symbol
     public RainbowSymbol(String color)
     {
         super(color);
+
+        mark = new Circle();
+        mark.changeColor("blue");
+        mark.changeSize(8);
     }
 
     /**
